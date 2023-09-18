@@ -10,5 +10,5 @@ FRONTEND_PORT=8006
 ```
 2) run docker-compose:
 ```
-docker-compose up --build
+docker-compose --env-file .env up --build
 ```

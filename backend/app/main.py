@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+from app.src.model.model_manipulation import load_model
 
+model = load_model()
 app = FastAPI()
 
 
@@ -15,7 +17,4 @@ def healthcheck():
 
 @app.get("/process_text")
 def process_text(text: str):
-    # TODO добавить обработку текста
-    return {"processed_text": text.upper()}
-
-# TODO добавить обработку файла
+    return {"processed_text": model.correct(text)}

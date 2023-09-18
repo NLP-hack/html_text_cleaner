@@ -8,10 +8,10 @@ services:
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "localhost:${BACKEND_PORT}/healthcheck"]
-      interval: 30s
+      test: ["CMD", "curl", "--fail", "localhost:${BACKEND_PORT}/healthcheck"]
+      interval: 60s
       timeout: 10s
-      retries: 5
+      retries: 10
     networks:
       - text-cleaner
 
