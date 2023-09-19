@@ -13,6 +13,7 @@ FRONTEND_PORT=8006
 docker-compose --env-file .env up --build
 ```
 >Если будет ошибка при скачивании - просто перезапустите команду, иногда google хулиганит
+>Протестировано на Mac OS и Linux
 3) Постучаться в бекенд: 
 ```commandline
 http://localhost:BACKEND_PORT
