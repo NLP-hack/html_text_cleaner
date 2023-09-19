@@ -45,7 +45,7 @@ class NorvigCorrector:
 
     def __init__(self, model, tokenizer, corrector, tag2punct, device='cpu',
                  spelling_threshold=0.5, punct_threshold=0.5):
-        self.EXTENDED_PUNCT = ',.?!:;'
+        self.extended_punct = list(self.tag2punct.values()) + ['!', '?']
         self.TOKEN_SEP = '##'
         self.device = device
         self.model = model.to(self.device)
@@ -115,17 +115,17 @@ class NorvigCorrector:
         return replacement
 
     def change_punctuation(self, tokens, next_puncts):
-        text = []
+        text = ['']
         model_punct = False
         for token, next_punct in zip(tokens, next_puncts):
-            if next_punct:
+            if next_punct and text[-1] not in self.extended_punct:
                 if token in punctuation:
                     text.append(next_punct)
                 else:
                     text.append(token)
                     text.append(next_punct)
                 model_punct = True
-            elif token not in list(self.tag2punct.values()) + ['!', '?'] or not model_punct:
+            elif token not in self.extended_punct or not model_punct:
                 text.append(token)
                 model_punct = False
         return [token for token in text if token]
