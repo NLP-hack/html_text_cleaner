@@ -1,3 +1,5 @@
+import re
+
 import torch
 from string import punctuation
 from torch.nn.functional import sigmoid
@@ -148,6 +150,14 @@ class NorvigCorrector:
             .replace(' »', '»')
             .replace('« ', '«')
         )
+
+        left_quoted = re.findall('(?<=" )[А-я|A-z|\d|,|\.]+', text)
+        right_quoted = re.findall('[А-я|A-z|\d|,|\.]+(?= ")', text)
+
+        for lq in left_quoted:
+            text = text.replace(f'" {lq}', f'"{lq}')
+        for rq in right_quoted:
+            text = text.replace(f'{rq} "', f'{rq}"')
         return text
     def correct(self, text, spelling_threshold=0.5, punct_threshold=0.5):
         self.spelling_threshold = spelling_threshold
