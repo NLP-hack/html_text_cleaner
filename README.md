@@ -22,5 +22,6 @@ http://localhost:BACKEND_PORT
 ```commandline
 http://localhost:FRONTEND_PORT
 ```
+>Если тестируете не локально, то ip можно найти в команде `ifconfig`
 5) [видео с работой сервиса](https://drive.google.com/file/d/1nKVEntGDkCQlUuKkcJtc8PN9KXBQnc4y/view?usp=sharing) and [презентация](https://docs.google.com/presentation/d/1SYX7P5-FobwfJRxwEDB0raLcvawMMB6rwvf_wDb1nKQ/edit#slide=id.g280424bac3a_0_81)
    
