@@ -20,3 +20,5 @@ http://localhost:BACKEND_PORT
 ```commandline
 http://localhost:FRONTEND_PORT
 ```
+5) [link to the preview](https://drive.google.com/file/d/1nKVEntGDkCQlUuKkcJtc8PN9KXBQnc4y/view?usp=sharing)
+   
