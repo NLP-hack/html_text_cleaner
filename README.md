@@ -8,7 +8,7 @@
 BACKEND_PORT=8005
 FRONTEND_PORT=8006
 ```
-2) run docker-compose:
+2) run docker-compose: (can take a long time to load the model)
 ```
 docker-compose --env-file .env up --build
 ```
