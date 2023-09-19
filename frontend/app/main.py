@@ -29,7 +29,7 @@ spelling_threshold = st.slider(
     "Порог для исправления орфографии",
     min_value=0.,
     max_value=1.0,
-    value=st.session_state.get("spelling_threshold", 0.5),
+    value=st.session_state.get("spelling_threshold", 0.3),
     step=0.01,
     help="Чем больше, тем меньше модель будет исправлять орфографию"
 )
@@ -38,7 +38,7 @@ punctuation_threshold = st.slider(
     "Порог для исправления пунктуации",
     min_value=0.,
     max_value=1.0,
-    value=st.session_state.get("punctuation_threshold", 0.3),
+    value=st.session_state.get("punctuation_threshold", 0.7),
     step=0.01,
     help="Чем больше, тем меньше модель будет исправлять пунктуацию"
 )
