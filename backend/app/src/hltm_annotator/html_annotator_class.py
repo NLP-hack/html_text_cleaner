@@ -5,6 +5,8 @@ class HTMLAnnotator:
 
     @staticmethod
     def _base_formatting(text):
+        text = text.replace('.\n', ';').replace('\n', ';').replace(';;', ';')
+        text = re.sub('([а-я.!?])([А-Я])', '\\1 \\2', text)
         text = re.sub(r'(?<=\n)"|(?<=\n)\n*|&nbsp', r'', text)
         text = re.sub(r':((?=(\d\.))|(?!(\n| |\d)))', r':\n', text)
         text = re.sub(r';(?!\n)', r';\n', text)

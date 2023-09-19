@@ -148,14 +148,10 @@ class MaskCorrector:
         )
         return text
 
-    def preprocess_text(self, text):
-        return re.sub('([а-я.!?])([А-Я])', '\\1 \\2', text)
-
     def correct(self, text, spelling_threshold=0.5, punct_threshold=0.5):
         self.spelling_threshold = spelling_threshold
         self.punct_threshold = punct_threshold
         text = str(text)
-        text = self.preprocess_text(text)
         tokenized_text = self.tokenizer(text, add_special_tokens=False, return_tensors='pt')
         punct_output, spelling_output = self.get_predictions(tokenized_text)
         tokens, corrections = self.correct_spelling(tokenized_text, spelling_output)
