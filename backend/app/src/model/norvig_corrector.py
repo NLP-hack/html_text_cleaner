@@ -45,7 +45,7 @@ class NorvigCorrector:
 
     def __init__(self, model, tokenizer, corrector, tag2punct, device='cpu',
                  spelling_threshold=0.5, punct_threshold=0.5):
-        self.extended_punct = list(self.tag2punct.values()) + ['!', '?']
+        self.extended_punct = list(tag2punct.values()) + ['!', '?']
         self.TOKEN_SEP = '##'
         self.device = device
         self.model = model.to(self.device)
@@ -159,6 +159,7 @@ class NorvigCorrector:
         for rq in right_quoted:
             text = text.replace(f'{rq} "', f'{rq}"')
         return text
+
     def correct(self, text, spelling_threshold=0.5, punct_threshold=0.5):
         self.spelling_threshold = spelling_threshold
         self.punct_threshold = punct_threshold
