@@ -13,4 +13,3 @@ COPY ./start.bash /code/start.bash
 RUN chmod +x /code/start.bash
 
 ENTRYPOINT ["./start.bash"]
-

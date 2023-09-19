@@ -1,7 +1,12 @@
 from fastapi import FastAPI
-from app.src.model.model_manipulation import load_model
+import logging
 
-model = load_model()
+from app.src.model.model_manipulation import load_model
+from app.src.hltm_annotator.html_manipulation import load_annotator
+from app.src.utils import get_result
+
+model = load_model('norvig')
+annotator = load_annotator()
 app = FastAPI()
 
 
@@ -16,5 +21,14 @@ def healthcheck():
 
 
 @app.get("/process_text")
-def process_text(text: str):
-    return {"processed_text": model.correct(text)}
+def process_text(input_text: str, spelling_threshold: float = 0.5,
+                 punctuation_threshold: float = 0.5):
+    res_wo_model = annotator.annotate(input_text)
+    res_model = model.correct(input_text, spelling_threshold, punctuation_threshold)
+
+    res = get_result(annotator, model, input_text, spelling_threshold, punctuation_threshold)
+    return {
+        'only_model': res_model,
+        "only_html": res_wo_model,
+        "processed_text": res,
+    }

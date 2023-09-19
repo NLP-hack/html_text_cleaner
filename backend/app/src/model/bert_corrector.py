@@ -1,49 +1,17 @@
 import re
-
-from transformers import AutoModel
-from torch.nn import Module, Dropout, Linear, Sequential
 import torch
 from torch.nn.functional import sigmoid
 from Levenshtein import distance as lev_distance
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from string import punctuation
 
-MODEL_NAME = 'DeepPavlov/rubert-base-cased'
-
-
-class Model(Module):
-    def __init__(self, pretrained_model_name, num_punct_classes, freeze=True, **kwargs):
-        super().__init__()
-        self.emb = AutoModel.from_pretrained(pretrained_model_name, output_attentions=False,
-                                             output_hidden_states=False)
-
-        self.emb_size = list(self.emb.parameters())[-1].shape[0]
-        if freeze:
-            for param in self.emb.parameters():
-                param.requires_grad = False
-
-        self.punct_hid_size = 392
-        self.spelling_hid_size = 392
-        self.punctuation_head = Sequential(
-            Dropout(p=0.1),
-            Linear(self.emb_size, self.punct_hid_size),
-            Linear(self.punct_hid_size, num_punct_classes)
-        )
-
-        self.spelling_head = Sequential(
-            Dropout(p=0.1),
-            Linear(self.emb_size, self.spelling_hid_size),
-            Linear(self.spelling_hid_size, 1)
-        )
-
-    def forward(self, input_ids, attention_mask, **kwargs):
-        emb = self.emb(input_ids=input_ids, attention_mask=attention_mask)[0]
-        punct_output = self.punctuation_head(emb)
-        spelling_output = self.spelling_head(emb)
-        return punct_output, spelling_output
-
 
 class MaskCorrector:
+    """
+    Bert который исправляет опечатки на основе кандидатов из модели
+    Соединяет результат с пунктуацией
+    """
+
     def __init__(self, model, tokenizer, mlm, tag2punct, device='cpu', k=10,
                  spelling_threshold=0.5, punct_threshold=0.5):
         self.TOKEN_SEP = '##'
@@ -183,7 +151,9 @@ class MaskCorrector:
     def preprocess_text(self, text):
         return re.sub('([а-я.!?])([А-Я])', '\\1 \\2', text)
 
-    def correct(self, text):
+    def correct(self, text, spelling_threshold=0.5, punct_threshold=0.5):
+        self.spelling_threshold = spelling_threshold
+        self.punct_threshold = punct_threshold
         text = str(text)
         text = self.preprocess_text(text)
         tokenized_text = self.tokenizer(text, add_special_tokens=False, return_tensors='pt')

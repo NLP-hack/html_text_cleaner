@@ -12,3 +12,11 @@ FRONTEND_PORT=8006
 ```
 docker-compose --env-file .env up --build
 ```
+3) backend address: 
+```commandline
+http://localhost:BACKEND_PORT
+```
+4) frontend address: 
+```commandline
+http://localhost:FRONTEND_PORT
+```
